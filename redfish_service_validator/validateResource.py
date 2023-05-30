@@ -56,6 +56,11 @@ def validateSingleURI(service, URI, uriName='', expectedType=None, expectedJson=
 
     ehandler, whandler = create_logging_capture(my_logger)
 
+    # Save visited URIs
+    save_uri_filename = service.config['save_uri_list']
+    with open(save_uri_filename, 'a') as f:
+        f.write('{}\n'.format(URI))
+
     me = {'uri': URI, 'success': False, 'counts': counts, 'messages': messages,
             'errors': '', 'warns': '', 'rtime': '', 'rcode': 0,
             'fulltype': '', 'context': '...', 'payload': {}}

@@ -76,6 +76,9 @@ def main(argslist=None, configfile=None):
     argget.add_argument('--schema_directory', type=str, default='./SchemaFiles/metadata', help='Directory for local schema files')
     argget.add_argument('--mockup', type=str, default='', help='Enables insertion of local mockup resources to replace missing, incomplete, or incorrect implementations retrieved from the service that may hinder full validation coverage')
 
+    # fuzzier options
+    argget.add_argument('--save_uri_list', '-s', type=str, help='File to save the visited uris')
+
     # parse...
     args = argget.parse_args(argslist)
 
@@ -132,6 +135,14 @@ def main(argslist=None, configfile=None):
         ['{}: {}'.format(x, vars(args)[x] if x not in ['password'] else '******') for x in sorted(list(vars(args).keys() - set(['description']))) if vars(args)[x] not in ['', None]]))
     my_logger.info('Start time: ' + startTick.strftime('%x - %X'))
     my_logger.info("")
+
+    if args.save_uri_list is None:
+        args.save_uri_list = datetime.strftime(startTick, os.path.join(logpath, "Visited_URI_List_%m_%d_%Y_%H%M%S.out"))
+
+    if os.path.exists(args.save_uri_list):
+        os.remove(args.save_uri_list)
+    my_logger.info('Visited URIs = {}'.format(args.save_uri_list))
+
 
     # schema and service init
     schemadir = args.schema_directory
