@@ -209,6 +209,7 @@ class SchemaDoc:
         self.classes = {}
         for child in children:
             self.classes[child["Namespace"]] = SchemaClass(child, self)
+            my_logger.error("XX:SchemaDoc Schema.child={}".format(child["Namespace"]))
         my_logger.debug(
             "References generated from {}: {} out of {}".format(
                 name, cntref, len(self.refs)
